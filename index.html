@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ระบบลงเวลา</title>
+</head>
+
+<body>
+
+<h2>ระบบลงเวลาเข้าออกงาน</h2>
+
+<input type="text" id="name" placeholder="กรอกชื่อ">
+
+<br><br>
+
+<button onclick="checkin()">เข้างาน</button>
+<button onclick="checkout()">ออกงาน</button>
+
+<script>
+
+const API_URL = "https://script.google.com/macros/s/AKfycbyR52VlHFrdeb8ATD3mhReCgCUNkMmzumxvwu1MG45vGz31KOcVxMf1E-eA_3Sd0RKR/exec";
+
+function sendData(status) {
+
+navigator.geolocation.getCurrentPosition((position) => {
+
+const data = {
+name: document.getElementById("name").value,
+status: status,
+time: new Date().toLocaleTimeString(),
+lat: position.coords.latitude,
+lng: position.coords.longitude
+};
+
+fetch(API_URL, {
+method: "POST",
+body: JSON.stringify(data)
+})
+.then(() => {
+alert("บันทึกสำเร็จ");
+});
+
+});
+
+}
+
+function checkin() {
+sendData("เข้างาน");
+}
+
+function checkout() {
+sendData("ออกงาน");
+}
+
+</script>
+
+</body>
+</html>
